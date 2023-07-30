@@ -1,0 +1,328 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+canvas {
+  margin-top: 15px;
+}
+a {
+  text-decoration: none;
+}
+
+.NavBar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.NavBar .Brand p {
+  font-size: 20px;
+  color: #2f3030;
+}
+
+.Container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+@media only screen and (max-width: 800px) {
+  .Container {
+    padding: 0 15px;
+  }
+}
+
+.Breadcrumbs {
+  padding: 20px 0px;
+}
+
+.Breadcrumbs a {
+  padding: 0 2px;
+  font-size: 17px;
+  color: #5b616e;
+}
+
+.Breadcrumbs a:hover {
+  transition: 0.3s all ease-in-out;
+  color: #4797fd;
+}
+
+.Breadcrumbs i {
+  font-size: 12px;
+  padding: 0 7px;
+}
+
+.CryptoTitle {
+  margin-top: 12px;
+}
+
+.CryptoTitle img {
+  width: 50px;
+}
+
+.CryptoTitle span {
+  margin-left: 10px;
+}
+
+.CryptoTitle span h3 {
+  font-size: 26px;
+  color: #0a0b0d;
+  font-weight: 500;
+}
+
+.CryptoTitle span p {
+  margin-top: 3px;
+  margin-left: 7px;
+  color: #5b616e;
+  font-size: 15px;
+}
+
+.LivePrice {
+  padding-right: 15px;
+  text-align: right;
+}
+
+@media only screen and (max-width: 600px) {
+  .LivePrice {
+    display: none;
+  }
+}
+
+.LivePrice p {
+  font-size: 30px;
+  font-weight: 500;
+  color: #0a0b0d;
+  margin-bottom: 10px;
+}
+
+.LivePrice div span {
+  padding: 3px 6px;
+  font-weight: 500;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.PositiveChange {
+  background-color: #5cd89f;
+}
+.NagativeChange {
+  background-color: #ff5c3e;
+}
+
+.LivePrice div span i {
+  margin-right: 3px;
+}
+
+.CoinTags {
+  padding-top: 13px;
+}
+
+.CoinTags span {
+  color: #58667e;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-weight: 400;
+  background-color: #eff2f5;
+}
+
+/*  */
+.CardsContainer {
+  display: flex;
+  align-items: flex-start;
+}
+
+@media only screen and (max-width: 1100px) {
+  .CardsContainer {
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+  }
+}
+
+.GraphCard {
+  width: 100%;
+  max-width: 700px;
+  margin: 25px 0 12px 18px;
+  padding: 12px 15px;
+  border: 1px solid #5b616e33;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px 0 rgba(50, 53, 61, 0.02);
+}
+
+.StatsCard {
+  width: 400px;
+  margin: 25px 0 12px 12px;
+  padding: 12px 15px;
+  border: 1px solid #5b616e33;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px 0 rgba(50, 53, 61, 0.02);
+}
+
+.CoinInfoCard {
+  width: 100%;
+  max-width: 700px;
+  margin: 25px 0 12px 18px;
+  padding: 12px 15px;
+  border: 1px solid #5b616e33;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px 0 rgba(50, 53, 61, 0.02);
+}
+
+@media only screen and (max-width: 800px) {
+  .GraphCard,
+  .CoinInfoCard {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 18px;
+    margin-bottom: 12px;
+  }
+  .StatsCard {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .GraphCard,
+  .CoinInfoCard {
+    max-width: 800px;
+  }
+  .StatsCard {
+    width: 100%;
+    max-width: 700px;
+  }
+  .CoinInfoCard {
+    margin: 0 auto;
+  }
+}
+
+/* Graph Card */
+.GraphCard_Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 600px) {
+  .GraphCard_Header {
+    justify-content: center;
+  }
+}
+
+.GraphCard h3 {
+  font-weight: 400;
+  font-size: 40px;
+}
+
+@media only screen and (max-width: 600px) {
+  .FilterBtns {
+    margin-top: 12px;
+    margin-bottom: 5px;
+  }
+}
+
+.FilterBtns button {
+  border: none;
+  padding: 0 7px;
+  font-size: 14px;
+  margin-left: 2px;
+  background-color: transparent;
+  background: transparent;
+  cursor: pointer;
+  color: #a0aec0;
+}
+
+/* .FilterBtns button:nth-child(2) {
+  color: #4797fd;
+} */
+
+.FilterActive {
+  color: #4797fd;
+}
+
+/* Stats Card */
+.StatsCard h3 {
+  margin-bottom: 12px;
+  font-weight: 500;
+  font-size: 21px;
+}
+
+.StatsCard .Stat {
+  margin-bottom: 5px;
+  padding: 9px 0;
+  font-size: 16px;
+}
+
+.StatsCard .Stat h3 {
+  font-weight: 400;
+  font-size: 16px;
+  margin-bottom: 0;
+  color: #0a0b0d;
+}
+
+.StatsCard .Stat p {
+  color: #5b616e;
+}
+
+.Tag {
+  color: #58667e;
+  font-size: 10px;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-weight: 500;
+  background-color: #eff2f5;
+}
+
+.PositiveUp {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #5cd89f;
+}
+.PositiveUp i {
+  margin-right: 3px;
+}
+
+.NagativeDown {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #ff5c3e;
+}
+.NagativeDown i {
+  margin-right: 3px;
+}
+
+/* Coin Info Card */
+.CoinInfoCard h2 {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.CoinInfoCard p {
+  margin-top: 10px;
+}
+
+.CoinLinks {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.CoinLinks a {
+  color: #2f3030;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-right: 8px;
+  padding: 2px 5px;
+  border: 1px solid #959999;
+  text-decoration: none;
+}

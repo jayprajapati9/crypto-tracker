@@ -1,0 +1,70 @@
+.d-flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+.items-end {
+  align-items: flex-end;
+}
+
+
+.flex-row {
+  flex-direction: row;
+}
+.flex-column {
+  flex-direction: column;
+}
+
+
+.flex-start {
+  justify-content: flex-start;
+}
+.space-between {
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+/* Font Weight */
+.fw-400 {
+  font-weight: 400;
+}
+.fw-500 {
+  font-weight: 500;
+}
+.fw-600 {
+  font-weight: 600;
+}
+.fw-700 {
+  font-weight: 700;
+}
+
+.w-30 {
+  width: 30px;
+}
+
+/* Padding */
+.ptb-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.plr-0 {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+.ptb-15 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.plr-30 {
+  padding-right: 30px;
+  padding-left: 30px;
+}

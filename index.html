@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+
+    <!-- Design Files -->
+    <link rel="stylesheet" href="OctaCss/octaDist.css">
+    <link rel="stylesheet" href="style/index.css">
+
+    <!-- Title -->
+    <title>CoinX</title>
+</head>
+
+<body>
+
+    <nav class="d-flex items-center space-between">
+        <a href="" class="Brand d-flex items-center flex-start fw-500">
+            <img src="Images/bitcoinIcon.png" alt="">
+            CoinX
+        </a>
+        <input type="text" placeholder="Search Coin" id="Search" onkeyup="searchCoin()">
+    </nav>
+
+    <div class="ChipsContainer d-flex items-center flex-start">
+        <p>Filters:</p>
+        <hr class="VerticalHR">
+        <div class="Chips">
+            <input type="radio" name="select" id="Option1" checked>
+            <input type="radio" name="select" id="Option2">
+            <input type="radio" name="select" id="Option3">
+            <input type="radio" name="select" id="Option4">
+            <input type="radio" name="select" id="Option5">
+            <input type="radio" name="select" id="Option6">
+
+            <label for="Option1" class="option Option1">
+                <span>USD</span>
+            </label>
+
+            <label for="Option2" class="option Option2">
+                <span>INR</span>
+            </label>
+
+            <label for="Option3" class="option Option3">
+                <span>All Cryptos</span>
+            </label>
+
+            <label for="Option4" class="option Option4">
+                <span>Top 5</span>
+            </label>
+
+            <label for="Option5" class="option Option5">
+                <span>Price % (24H)</span>
+            </label>
+
+            <label for="Option6" class="option Option6">
+                <span>Below $ 1</span>
+            </label>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="Container" id="Container"></div>
+
+    <br>
+
+    <script>
+        var Container = document.getElementById("Container");
+        var parentNodes = document.getElementsByClassName('Card');
+        var nameNodes = document.getElementsByClassName('HiddenName');
+        var priceNodes = document.getElementsByClassName('HiddenPrice');
+        var input = document.getElementById("Search");
+
+        // Fetch Function
+        function getResults(params, currencySign) {
+            fetch(params)
+                .then(item => {
+                    return item.json();
+                }).then((item) => {
+                    console.log("Fetch Success");
+                    RenderCoinCards(item, currencySign);
+                    console.log("Card Rendered");
+                }).catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        // For Rendering Coin In Html
+        function RenderCoinCards(item, currencySign) {
+            for (let a = 0; a < item.length; a++) {
+
+                Container.innerHTML +=
+                    `<div class="Card" data-id="${item[a].id}">
+                <p class="HiddenName">${item[a].name} ${item[a].symbol}</p>
+                <p class="HiddenPrice">${item[a].current_price}</p>                             
+                <div class="CardSubPart d-flex flex-row items-center">
+                    <img src="${item[a].image}" alt="${item[a].name}">
+                    <div class="d-flex flex-column">
+                        <p>${item[a].name} <span># ${item[a].market_cap_rank}</span></p>
+                        <p>${String(item[a].symbol).toUpperCase()}</p>
+                    </div>
+                </div>
+                <div class="CardPricePart d-flex flex-column items-end">
+                    <p>${currencySign} ${item[a].current_price.toLocaleString()}</p>
+                    <p class="priceChange ${item[a].price_change_percentage_24h >= 0 ? "Positive" : "Nagative"}">
+                    <i class="${item[a].price_change_percentage_24h >= 0 ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"} icon"></i>
+                    ${item[a].price_change_percentage_24h.toLocaleString()}%
+                </p>
+             </div>
+            </div>`;
+
+                // Click Event On Card
+                // const Cards = document.querySelectorAll(".Card");
+                for (let i = 0; i < parentNodes.length; i++) {
+                    parentNodes[i].addEventListener("click", function () {
+                        var dataIdVal = $(this).data("id");
+                        localStorage.setItem('myCrypto', dataIdVal);
+                        window.location.href = "Dashboard.html";
+                    });
+                }
+
+            }
+        }
+
+        // Coin Search Function
+        function searchCoin() {
+            var filter = input.value.toLowerCase();
+            for (i = 0; i < nameNodes.length; i++) {
+                if (nameNodes[i].innerText.toLowerCase().includes(filter)) {
+                    parentNodes[i].style.display = "flex";
+                } else {
+                    parentNodes[i].style.display = "none";
+                }
+            }
+        }
+
+        // For Showing Coin Under 1 USD
+        function below1usd() {
+            for (i = 0; i < priceNodes.length; i++) {
+                if (priceNodes[i].innerText <= 1) {
+                    parentNodes[i].style.display = "flex";
+                } else {
+                    parentNodes[i].style.display = "none";
+                }
+            }
+        }
+
+        getResults('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false', '$');
+
+        document.getElementById("Option1").addEventListener("click", function () {
+            Container.innerHTML = null;
+            getResults('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false', '$');
+        });
+
+        document.getElementById("Option2").addEventListener("click", function () {
+            Container.innerHTML = null;
+            getResults('https://api.coingecko.com/api/v3/coins/markets?vs_currency=INR&order=market_cap_desc&per_page=5&page=1&sparkline=false', '₹');
+        });
+
+        document.getElementById("Option6").addEventListener("click", function () {
+            below1usd();
+        });
+    </script>
+</body>
+
+</html>

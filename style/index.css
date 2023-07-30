@@ -1,0 +1,269 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+html,
+body {
+  background-color: #f4f8f9;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*========*/
+/* NavBar */
+/*========*/
+nav {
+  background-color: #ffffff;
+  padding: 15px 30px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+nav .Brand {
+  font-size: 19px;
+  color: #515658;
+  width: fit-content;
+}
+
+nav .Brand img {
+  margin-right: 5px;
+  width: 30px;
+}
+
+nav input {
+  padding: 7px 12px;
+  border-radius: 3px;
+  outline: none;
+  border: solid 1px #dedede;
+}
+
+nav input:focus {
+  border: 1px solid #4797fd;
+}
+
+@media only screen and (max-width: 560px) {
+  nav {
+    padding: 14px 15px;
+  }
+}
+
+/* ===================== */
+/* Filter Chip Container */
+/* ===================== */
+.ChipsContainer {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 13px 12px;
+}
+
+.ChipsContainer p {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: #4797fd;
+  border: none;
+  padding: 3px 0px;
+  /* border-right: 1px solid #e2e8f0; */
+}
+
+@media only screen and (max-width: 560px) {
+  .ChipsContainer {
+    padding: 12px 8px;
+  }
+
+  .ChipsContainer p {
+    padding: 3px 0px;
+    padding-left: 5px;
+  }
+}
+
+.VerticalHR {
+  opacity: 0.6;
+  border: 0;
+  border-color: #dddddd;
+  border-style: solid;
+  border-left-width: 1px;
+  height: 30px;
+  margin: 0px 14px;
+}
+
+@media only screen and (max-width: 600px) {
+  .Chips {
+    /* background-color: #333; */
+    white-space: nowrap;
+    padding-bottom: 6px;
+    overflow: hidden;
+  }
+
+  .Chips .option {
+    display: inline-block;
+    margin-top: 6px;
+  }
+
+  .Chips:hover {
+    overflow: auto;
+  }
+
+  .Chips::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .Chips::-webkit-scrollbar {
+    height: 2px;
+  }
+
+  .Chips::-webkit-scrollbar-thumb {
+    height: 3px;
+    background-color: #00000033;
+  }
+
+  .Chips::-webkit-scrollbar-thumb:hover {
+    background-color: #0000001e;
+  }
+
+  .Chips::-webkit-scrollbar:vertical {
+    display: none;
+  }
+}
+
+.option {
+  background: #fff;
+  height: 100%;
+  width: fit-content;
+  border-radius: 9999px;
+  display: inline-flex;
+  cursor: pointer;
+  margin: 0 4px;
+  padding: 4px 12px;
+  transition: all 0.3s ease;
+  border: 0.5px solid #e5edfd;
+  /* border: 0.5px solid #d4e0fc; */
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+#Option1:checked:checked ~ .Option1,
+#Option2:checked:checked ~ .Option2,
+#Option3:checked:checked ~ .Option3,
+#Option4:checked:checked ~ .Option4,
+#Option5:checked:checked ~ .Option5,
+#Option6:checked:checked ~ .Option6 {
+  border-color: #4797fd;
+  background: #4797fd;
+}
+
+.option span {
+  font-weight: 600;
+  font-size: 13px;
+  color: #808080;
+}
+
+#Option1:checked:checked ~ .Option1 span,
+#Option2:checked:checked ~ .Option2 span,
+#Option3:checked:checked ~ .Option3 span,
+#Option4:checked:checked ~ .Option4 span,
+#Option5:checked:checked ~ .Option5 span,
+#Option6:checked:checked ~ .Option6 span {
+  color: #fff;
+}
+
+/* ===============*/
+/* Card Container */
+/* ===============*/
+.Container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0px 14px;
+}
+
+.Card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px;
+  padding: 18px 18px;
+  border: 1px solid #e3e8ee;
+  cursor: pointer;
+  background-color: #ffffff;
+  /* box-shadow: -2px 2px 5px #d4e0fc; */
+  border-radius: 6px;
+  transition: 0.5s;
+}
+
+.HiddenName,
+.HiddenPrice {
+  display: none;
+  opacity: 0;
+}
+
+.Card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+
+.CardSubPart img {
+  margin-right: 18px;
+  width: 55px;
+}
+
+@media only screen and (max-width: 600px) {
+  .CardSubPart img {
+    width: 38px;
+  }
+}
+
+.CardSubPart div p:nth-child(1) {
+  display: flex;
+  align-items: flex-start;
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: #2c2e43;
+  font-weight: 500;
+}
+
+.CardSubPart div p:nth-child(1) span {
+  color: #58667e;
+  margin-left: 3px;
+  font-size: 8px;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-weight: 500;
+  background-color: #eff2f5;
+}
+
+.CardSubPart div p:nth-child(2) {
+  font-size: 13px;
+  color: #84859a;
+  font-weight: 400;
+}
+
+.CardPricePart p:nth-child(1) {
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: #2c2e43;
+  font-weight: 500;
+}
+
+.CardPricePart p:nth-child(2) {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.Positive {
+  color: #82dd55;
+}
+
+.Nagative {
+  color: #e23636;
+}

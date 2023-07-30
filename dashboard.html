@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoinX</title>
+
+    <!-- CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+
+    <!-- Css -->
+    <link rel="stylesheet" href="style/dashboard.css">
+
+    <!-- Octa Css -->
+    <link rel="stylesheet" href="OctaCss/octaDist.css">
+</head>
+
+<body>
+    <!-- NavBar -->
+    <nav class="NavBar d-flex items-center space-between plr-30 ptb-15">
+        <a href="" class="Brand d-flex items-center">
+            <img class="mr-5 w-30" src="Images/bitcoinIcon.png" alt="">
+            <p class="fw-500">CoinX</p>
+        </a>
+    </nav>
+
+    <div class="Container">
+
+        <div class="Breadcrumbs d-flex items-center">
+            <a href="" class="fw-400">Cryptocurrencies</a>
+            <i class="bi bi-chevron-right"></i>
+            <a href="" class="fw-400" id="CryptoName1"></a>
+        </div>
+
+        <div class="CryptoTitle d-flex items-center space-between">
+            <div class="d-flex items-center">
+                <img src="" alt="" id="CryptoLogo">
+                <span class="d-flex items-center">
+                    <h3 id="CryptoName2"></h3>
+                    <p id="CryptoSymbol1" style="text-transform: capitalize;"></p>
+                </span>
+            </div>
+            <div class="LivePrice">
+                <p id="CryptoPrice3"></p>
+                <!-- <span class="PositiveChange">
+                    <i class="bi bi-caret-up-fill"></i> 4.21%
+                </span> -->
+
+                <div id="CryptoPriceChangePrc1">
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="CoinTags">
+            <span id="Rank"></span>
+            &nbsp;
+            <span>Cryptocurrency</span>
+        </div>
+
+        <div class="CardsContainer">
+            <div class="GraphCard">
+                <div class="GraphCard_Header">
+                    <h3 id="CryptoPrice2">$</h3>
+                    <div class="FilterBtns">
+                        <button>1D</button>
+                        <button style="color: #4797fd;">1W</button>
+                        <button>1M</button>
+                        <button>1Y</button>
+                        <button>ALL</button>
+                    </div>
+                </div>
+                <canvas id="canvas"></canvas>
+            </div>
+
+            <div class="StatsCard">
+                <h3>Price Statistics</h3>
+                <div class="Stat d-flex items-center space-between">
+                    <h3 class="fw-500">Bitcoin Price</h3>
+                    <p id="CryptoPrice1">$</p>
+                </div>
+                <div class="Stat d-flex items-center space-between">
+                    <h3>Price Change <span class="Tag">24H</span></h3>
+                    <div class="d-flex items-end flex-column">
+                        <p id="CryptoPriceChange">$</p>
+                        <!-- <span class="PositiveUp"><i class="bi bi-caret-up-fill"></i>2.96</span> -->
+                        <div id="CryptoPriceChangePrc">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="Stat d-flex items-center space-between">
+                    <h3>Total Volume</h3>
+                    <p id="CryptoTotalVolume">$</p>
+                </div>
+                <div class="Stat d-flex items-center space-between">
+                    <h3>Market Cap <span class="Tag">24H</span></h3>
+                    <div class="d-flex items-end flex-column">
+                        <p id="CryptoMarketCap">$</p>
+                        <div id="CryptoCapChangePrc">
+                        </div>
+                        <!-- <span class="NagativeDown"><i class="bi bi-caret-down-fill"></i>3.17</span> -->
+                    </div>
+                </div>
+                <div class="Stat d-flex items-center space-between">
+                    <h3>24h Low / 24h High</h3>
+                    <p id="LowHigh24"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="CoinInfoCard">
+            <h2 id="About">About</h2>
+            <p id="Desc"></p>
+            <div class="CoinLinks">
+                <a href="">
+                    <i class="bi bi-link-45deg"></i>
+                    Website
+                </a>
+                <a href="">
+                    <i class="bi bi-link-45deg"></i>
+                    Twitter
+                </a>
+                <a href="">
+                    <i class="bi bi-link-45deg"></i>
+                    Facebook
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <br>
+    <script>
+        window.onload = function () {
+
+            const x = [];
+            const y = [];
+
+            var chart;
+
+            if (localStorage.getItem("myCrypto") === null) {
+                localStorage.setItem('myCrypto', "bitcoin")
+            }
+
+            var myCrypto = localStorage.getItem("myCrypto");
+            console.log(myCrypto);
+
+            const convertTo = function (labelValue) {
+                // Nine Zeroes for Billions
+                return Math.abs(Number(labelValue)) >= 1.0e+9
+
+                    ? (Math.abs(Number(labelValue)) / 1.0e+9).toFixed(2) + "B"
+                    // Six Zeroes for Millions 
+                    : Math.abs(Number(labelValue)) >= 1.0e+6
+
+                        ? (Math.abs(Number(labelValue)) / 1.0e+6).toFixed(2) + "M"
+                        // Three Zeroes for Thousands
+                        : Math.abs(Number(labelValue)) >= 1.0e+3
+
+                            ? (Math.abs(Number(labelValue)) / 1.0e+3).toFixed(2) + "K"
+                            : Math.abs(Number(labelValue));
+            }
+
+            console.log(convertTo(6800000));
+
+
+            fetch(`https://api.coingecko.com/api/v3/coins/${myCrypto}`)
+                .then(item => {
+                    return item.json();
+                }).then((item) => {
+
+                    let symbol = item.symbol;
+                    localStorage.setItem("symbol", symbol);
+
+                    document.getElementById("CryptoName1").innerText = item.name;
+                    document.getElementById("CryptoName2").innerText = item.name;
+                    document.getElementById("About").innerText = "About " + item.name;
+                    document.getElementById("CryptoSymbol1").innerText = item.symbol;
+                    document.getElementById("Rank").innerText = "Rank #" + item.market_cap_rank;
+                    document.getElementById("CryptoLogo").src = item.image.large;
+                    document.getElementById("CryptoPriceChange").innerText = "$" + Number(item.market_data.price_change_24h_in_currency.usd).toLocaleString();
+                    document.getElementById("CryptoPrice1").innerText = "$" + Number(item.market_data.current_price.usd).toLocaleString();
+                    document.getElementById("CryptoPrice2").innerText = "$" + Number(item.market_data.current_price.usd).toLocaleString();
+                    document.getElementById("CryptoPrice3").innerText = "$" + Number(item.market_data.current_price.usd).toLocaleString();
+                    document.getElementById("CryptoMarketCap").innerText = "$" + Number(item.market_data.market_cap.usd).toLocaleString();
+                    document.getElementById("CryptoTotalVolume").innerText = "$" + Number(item.market_data.total_volume.usd).toLocaleString();
+
+                    document.getElementById("CryptoPriceChangePrc").innerHTML = `
+                    <span class="${item.market_data.price_change_percentage_24h >= 0 ? "priceChange" : "NagativeDown"}">
+                        <i class="${item.market_data.price_change_percentage_24h >= 0 ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"} icon"></i>
+                        ${item.market_data.price_change_percentage_24h}%
+                    </span>    
+                    `;
+                    document.getElementById("CryptoCapChangePrc").innerHTML = `
+                    <span class="${item.market_data.market_cap_change_percentage_24h >= 0 ? "priceChange" : "NagativeDown"}">
+                        <i class="${item.market_data.market_cap_change_percentage_24h >= 0 ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"} icon"></i>
+                        ${item.market_data.market_cap_change_percentage_24h}%
+                    </span>    
+                    `;
+                    document.getElementById("CryptoPriceChangePrc1").innerHTML = `
+                    <span class="${item.market_data.price_change_percentage_24h >= 0 ? "PositiveChange" : "NagativeChange"}">
+                        <i class="${item.market_data.price_change_percentage_24h >= 0 ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill"} icon"></i>
+                        ${item.market_data.price_change_percentage_24h}%
+                    </span>    
+                    `;
+
+                    document.getElementById("Desc").innerHTML = item.description.en;
+
+                    document.getElementById("LowHigh24").innerText = "$" + Number(item.market_data.low_24h.usd).toString() + " / " + Number(item.market_data.high_24h.usd).toString();
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+
+            // https://api.coingecko.com/api/v3/coins/${myCrypto}/market_chart?vs_currency=USD&days=7
+
+            function fetchChart(days) {
+                fetch(`https://api.coingecko.com/api/v3/coins/${myCrypto}/market_chart?vs_currency=USD&days=${days}`)
+                    .then(data => {
+                        return data.json();
+                    }).then((data) => {
+
+                        for (let i = 0; i < data.prices.length; i++) {
+                            x.push(data.prices[i][0]);
+                            y.push(data.prices[i][1].toFixed(2));
+                            setChart(x, y);
+                        }
+
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+            }
+
+            fetchChart("7");
+
+
+            function setChart(xCoor, yCoor) {
+                var op = {
+                    type: 'line',
+                    data: {
+                        labels: xCoor,
+                        datasets: [{
+                            label: localStorage.getItem("symbol"),
+                            data: yCoor,
+                            borderColor: 'rgba(71, 151, 253, 1)',
+                            backgroundColor: 'rgba(0,0,0,0)',
+                            borderJoinStyle: 'round',
+                            borderCapStyle: 'round',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            pointHitRadius: 10,
+                            lineTension: 0,
+                        }]
+                    },
+                    options: {
+                        // responsive: false,
+                        title: {
+                            display: false,
+                            text: 'Crypto Chart',
+                            fontSize: 35
+                        },
+
+                        legend: {
+                            display: false
+                        },
+
+                        layout: {
+                            padding: {
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                bottom: 0
+                            }
+                        },
+
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                type: 'time',
+                                time: {
+                                    displayFormats: {
+                                        'millisecond': 'MMM DD',
+                                        'second': 'MMM DD',
+                                        'minute': 'MMM DD',
+                                        'hour': 'MMM DD',
+                                        'day': 'MMM DD',
+                                        'week': 'MMM DD',
+                                        'month': 'MMM DD',
+                                        'quarter': 'MMM DD',
+                                        'year': 'MMM DD',
+                                    }
+                                },
+                                gridLines: { color: "rgba(0, 0, 0, 0)" }
+                            }],
+                            yAxes: [{
+                                display: false,
+                                gridLines: {}
+                            }]
+                        },
+
+                        tooltips: {
+                            callbacks: {
+                                // This removes the tooltip title
+                                title: function () { }
+                            },
+                            //this removes legend color
+                            displayColors: false,
+                            yPadding: 10,
+                            xPadding: 10,
+                            position: 'nearest',
+                            caretSize: 10,
+                            backgroundColor: 'rgba(255,255,255,.9)',
+                            bodyFontSize: 15,
+                            borderWidth: 3,
+                            bodyFontColor: '#303030'
+                        }
+                    }
+                }
+
+                if (chart) {
+                    chart.destroy();
+                }
+
+                var ctx = document.getElementById('canvas').getContext('2d');
+                chart = new Chart(ctx, op);
+            }
+            // var x = [28, 13, 50, 45, 10, 38, 75, 80, 12, 39];
+            // var chart;
+
+            // var op = {
+            //     type: 'line',
+            //     data: {
+            //         labels: [1637157729157,
+            //             1637161214408,
+            //             1637165053082,
+            //             1637169334741,
+            //             1637172141115,
+            //             1637175613629,
+            //             1637179551615,
+            //             1637182926770,
+            //             1637186549622,
+            //             1637190403915],
+            //         datasets: [{
+            //             label: 'BTC',
+            //             data: x,
+            //             borderColor: 'rgba(71, 151, 253, 1)',
+            //             backgroundColor: 'rgba(0,0,0,0)',
+            //             borderJoinStyle: 'round',
+            //             borderCapStyle: 'round',
+            //             borderWidth: 2,
+            //             pointRadius: 0,
+            //             pointHitRadius: 10,
+            //             lineTension: 0,
+            //         }]
+            //     },
+            //     options: {
+            //         // responsive: false,
+            //         title: {
+            //             display: false,
+            //             text: 'Crypto Chart',
+            //             fontSize: 35
+            //         },
+
+            //         legend: {
+            //             display: false
+            //         },
+
+            //         layout: {
+            //             padding: {
+            //                 left: 0,
+            //                 right: 0,
+            //                 top: 0,
+            //                 bottom: 0
+            //             }
+            //         },
+
+            //         scales: {
+            //             xAxes: [{
+            //                 display: true,
+            //                 type: 'time',
+            //                 gridLines: { color: "rgba(0, 0, 0, 0)" }
+            //             }],
+            //             yAxes: [{
+            //                 display: false,
+            //                 gridLines: {}
+            //             }]
+            //         },
+
+            //         tooltips: {
+            //             callbacks: {
+            //                 // This removes the tooltip title
+            //                 title: function () { }
+            //             },
+            //             //this removes legend color
+            //             displayColors: false,
+            //             yPadding: 10,
+            //             xPadding: 10,
+            //             position: 'nearest',
+            //             caretSize: 10,
+            //             backgroundColor: 'rgba(255,255,255,.9)',
+            //             bodyFontSize: 15,
+            //             borderWidth: 3,
+            //             bodyFontColor: '#303030'
+            //         }
+            //     }
+            // }
+
+            // var ctx = document.getElementById('canvas').getContext('2d');
+            // chart = new Chart(ctx, op);
+
+            // Make it visually fill the positioned parent
+            // ctx.style.width = '100%';
+            // ctx.style.height = '100%';
+            // ...then set the internal size to match
+
+            // ctx.width = ctx.offsetWidth;
+            // ctx.height = ctx.offsetHeight;
+
+            // ctx.canvas.width = document.querySelector("cryptoChartCard").innerWidth;
+            // ctx.canvas.height = document.querySelector("cryptoChartCard").innerHeight;
+        }
+    </script>
+</body>
+
+</html>
